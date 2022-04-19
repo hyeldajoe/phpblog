@@ -1,23 +1,66 @@
 <?php include "includes/header.php"; ?>
+<?php
 
+
+//Create DB Object
+
+$db = new Database();
+
+//check URL for category
+if(isset($_GET['category'])){
+  $category = $_GET['category'];
+
+  
+$query = "SELECT * FROM posts WHERE category =".$category;
+
+//Run Query
+
+$posts = $db->select($query);
+
+  
+}else{
+
+
+
+
+// Create Query
+
+$query = "SELECT * FROM posts";
+
+//Run Query
+
+$posts = $db->select($query);
+}
+
+
+
+// Create Query
+
+$query = "SELECT * FROM categories";
+
+//Run Query
+
+$categories = $db->select($query);
+
+?>
+
+<?php if($posts): ?>
+
+  <?php while($row= $posts->fetch_assoc()): ?>
           <div class="blog-post">
-            <h2 class="blog-post-title">PHP International Conference</h2>
-            <p class="blog-post-meta">January 1, 2014 by <a href="#">Mark</a></p>
+            <h2 class="blog-post-title"><?php echo $row['title']; ?></h2>
+            <p class="blog-post-meta"><?php echo formatDate($row['date']); ?> by <a href="#"><?php echo $row['author']; ?></a></p>
 
-            <p>Vivamus laoreet. Vivamus in erat ut urna cursus vestibulum. In auctor lobortis lacus. Ut a nisl id ante tempus hendrerit. Fusce neque.
-
-Praesent egestas tristique nibh. Curabitur at lacus ac velit ornare lobortis. Proin magna. Nam commodo suscipit quam. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum.</p>
-   <a class="readmore" href="post.php?id=1">Read More</a>      
+            <?php echo shortenText($row['body']); ?>
+   <a class="readmore" href="post.php?id=<?php echo urlencode($row['id']); ?>">Read More</a>      
 </div><!-- /.blog-post -->
+<?php endwhile; ?>
+          
 
-          <div class="blog-post">
-            <h2 class="blog-post-title">How to code in PHP</h2>
-            <p class="blog-post-meta">September 4, 2021 by <a href="#">John</a></p>
+<?php else: ?>
 
-            <p>Vivamus laoreet. Vivamus in erat ut urna cursus vestibulum. In auctor lobortis lacus. Ut a nisl id ante tempus hendrerit. Fusce neque.
+  <p>There are no post here</p>
 
-Praesent egestas tristique nibh. Curabitur at lacus ac velit ornare lobortis. Proin magna. Nam commodo suscipit quam. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum.</p>
-<a class="readmore" href="post.php?id=1">Read More</a>                
-</div><!-- /.blog-post -->
+  <?php endif; ?>
 
 <?php include "includes/footer.php"; ?> 
