@@ -86,7 +86,7 @@ class Database{
     
         //Validate Insert
         if($delete_row){
-            header("Location: index.php?msg=".urlencode('Record Updated'));
+            header("Location: index.php?msg=".urlencode('Record Deleted'));
             exit();
 
         }else{
